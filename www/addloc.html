@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Really-Smartphone</title>  
+      
+         <meta name="description" content="">
+        
+        <!-- Mobile viewport optimized -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        
+        <!-- Bootstrap CSS -->
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="inc/css/bootstrap-glyphicons.css" rel="stylesheet">
+        
+        <!-- Custom CSS -->
+        <link href="inc/css/styles.css" rel="stylesheet">
+        
+        <!-- Include Modernizr in the head, before any other Javascript -->
+        <script src="inc/js/modernizr-2.6.2.min.js"></script>
+     
+    </head>
+    <body>
+
+     <div class="container" id="main">
+        
+        <div class="content center-block">
+
+            <div class="contentinfo">
+
+                <h1>Add Location</h1>
+                <p>Saving your location might take a few seconds. If you get a prompt asking if this site can see your GPS position, please say yes. Else the application won't work.</p>
+
+                <label for="locationName">Location Name</label>
+                <input type="name" id="locationName" class="form-control" placeholder="Name your location here..."></input>
+                <button id="saveData" class="btn btn-success">Save</button>
+
+            </div><!--einde contentinfo-->
+        </div><!--einde content-->
+
+        <footer>
+            <nav class="navbar navbar-fixed-bottom" role="navigation">
+                <div>
+                    <ul class="nav nav-justified">
+                        <li><a href="addloc.html"><span class="glyphicon glyphicon-plus"> </span>ADD</a></li>
+                        <li><a href="list.html" id="menuborder"><span class="glyphicon glyphicon-list"> </span>LIST</a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-cog"> </span>MORE</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </footer>
+    </div><!--einde container-->
+    <!-- First try for the online version of jQuery-->
+    <script src="https://code.jquery.com/jquery.js"></script>
+    
+    <!-- If no online access, fallback to our hardcoded version of jQuery -->
+    <script>window.jQuery || document.write('<script src="inc/js/jquery-1.8.2.min.js"><\/script>')</script>
+    
+    <!-- Bootstrap JS -->
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="inc/js/add.js"></script>
+    
+    </body>
+</html>
+

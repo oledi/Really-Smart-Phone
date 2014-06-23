@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <!-- Website Title & Description for Search Engine purposes -->
+        <title>Really-Smartphone</title>
+        <meta name="description" content="">
+        
+        <!-- Mobile viewport optimized -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        
+        <!-- Bootstrap CSS -->
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="inc/css/bootstrap-glyphicons.css" rel="stylesheet">
+        
+        <!-- Custom CSS -->
+        <link href="inc/css/styles.css" rel="stylesheet">
+        
+        <!-- Include Modernizr in the head, before any other Javascript -->
+        <script src="inc/js/modernizr-2.6.2.min.js"></script>
+        
+    </head>
+    <body>
+    
+    <div class="container" id="main">
+        
+        <div class="content center-block">
+
+            <img src="https://fbcdn-sphotos-g-a.akamaihd.net/hphotos-ak-xpa1/t1.0-9/1374070_10201746712728810_1505686035_n.jpg" alt="profile image" class="img-circle img-responsive center-block" id="profileimg">
+
+            <span class="glyphicon glyphicon-info-sign" id="infosign"></span>
+
+            <div class="contentinfo">
+                <h1> Bart Simons </h1>
+                <p id="geolocatie">Click the button to get your coordinates.</p>
+                <button id="knop" type="button" class="btn btn-default center-block" onclick="homeLocation()">Get Coordinates</button>
+            </div><!--einde contentinfo-->
+        </div><!--einde content-->
+
+        <footer>
+            <nav class="navbar navbar-fixed-bottom" role="navigation">
+                <div>
+                    <ul class="nav nav-justified">
+                        <li><a href="addloc.html"><span class="glyphicon glyphicon-plus"> </span>ADD</a></li>
+                        <li><a href="list.html" id="menuborder"><span class="glyphicon glyphicon-list"> </span>LIST</a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-cog"> </span>MORE</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </footer>
+    </div><!--einde container-->
+    
+    <!-- All Javascript at the bottom of the page for faster page loading -->
+        
+    <!-- First try for the online version of jQuery-->
+    <script src="https://code.jquery.com/jquery.js"></script>
+    
+    <!-- If no online access, fallback to our hardcoded version of jQuery -->
+    <script>window.jQuery || document.write('<script src="inc/js/jquery-1.8.2.min.js"><\/script>')</script> 
+    <!-- Bootstrap JS -->
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Loc berekenen -->
+    <script src="inc/js/loc.js"></script>
+    
+    </body>
+</html>
+
