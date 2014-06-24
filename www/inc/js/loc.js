@@ -1,73 +1,108 @@
-(function () {
+(function() {
 
-	//Parse localstorage items naar leesbare arrays, voeg ze vervolgens samen
-    var lat = JSON.parse(localStorage.getItem('latitude') || "[]");
-    var lon = JSON.parse(localStorage.getItem('longitude') || "[]");
-    var position;
-    // position.lat
+	var storedPositions = {
 
-    function initCoords() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(saveLocation);
-            createLatLong()
-        } else {
-            showError("Your browser does not support Geolocation!");
-        }
-    }
+		lat:JSON.parse(localStorage.getItem('latitude') || "[]"),
+		lon:JSON.parse(localStorage.getItem('longitude') || "[]")
+	
+	}
 
-    function saveLocation(position) {
-    	position = position.coords;
-    }
+	var intervalTimers = {
 
-    function createLatLong(position) {
-        var lat2 = position.coords.latitude;
-        var long2 = position.coords.longitude;
-        var result;
+		leftLocation:null,
+		onLocation:null,
+		geoCheck:null
+	}
 
-        for (var i = 0; i < lat.length; i++) {
-        	result = getDistance(lat[i], lon[i], lat2, long2);
-		}
- 
-        // 1.0 = 1km, 0,5 = 500m. Als afstand minder dan 500m is, dan ben je dichterbij.
-    	if (result < 0.2 ) { // kleiner 10 meter
-    		alert("Je bent op locatie! Zet je geluid uit.");
-    		onLocation(position);
-    	} else setTimeout(initCoords, 15000); //15000 = timeout in MS, omzetten naar var
-    }
+	var currentPosition = {}
 
-    function onLocation(position) {
-    	var lat2 = position.coords.latitude;
-        var long2 = position.coords.longitude;
-        var result;
-        var intervalLoop;
+	var controller = {
 
-        onLocation(position);
-		intervalLoop = setInterval(function() {
-			for (var i = 0; i < lat.length; i++) {
-	        	result = getDistance(lat[i], lon[i], lat2, long2);
-	          	console.log("TEST ONLOCATION" + result)
-			}
+		init:function() {
+			var self = this;
+			this.initCoords();
+			
+			intervalTimers.geoCheck = setInterval(function() {
+		    if(currentPosition.lat != 'undefined' && currentPosition.long != 'undefined') {
+		     clearInterval(intervalTimers.geoCheck);
+		     self.onLocation();
+		    		}
+				}, 1000);
+		},
 
-   			if ( result > 0.01 ) // kleiner 10 meter
-   				
-    			alert("Je bent weg van je locatie! Geluid kan weer aan.");
-    		}
-   		}, 15000);
+		initCoords:function() {
+			if (navigator.geolocation) {
+            	navigator.geolocation.getCurrentPosition(this.saveCurrentLocation);
+        	} else {
+            	showError("Your browser does not support Geolocation!");
+        	}
+		},
 
-    	
+		saveCurrentLocation:function(position) {
+			currentPosition.lat = position.coords.latitude;
+			currentPosition.lon = position.coords.longitude;
+		},
 
-    }
+		getDistance:function(currentLat, currentLon, storedLat, storedLon) {
+			var R = 6371;
+	        var dLat = (currentLat - storedLat) * Math.PI / 180;
+	        var dLon = (currentLon - storedLon) * Math.PI / 180;
+	        var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(storedLat * Math.PI / 180) * Math.cos(currentLat * Math.PI / 180) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+	        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+	        var d = R * c;
+	        return d;
+		},
 
-    function getDistance(lat, lon, lat2, long2) {
-        var R = 6371;
-        var dLat = (lat2 - lat) * Math.PI / 180;
-        var dLon = (long2 - lon) * Math.PI / 180;
-        var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        var d = R * c;
-        return d;
-    }
-    
-    initCoords();
+		onLocation:function() {
+	        var result;
+	        var self = this;
+	        var locNotify = document.getElementById("geolocatie");
+
+	        intervalTimers.onLocation = setInterval(function() {
+
+		        for (var i = 0; i < storedPositions.lat.length; i++) {
+		        	result = self.getDistance(storedPositions.lat[i], storedPositions.lon[i], currentPosition.lat, currentPosition.lon);
+
+		        	 // 1.0 = 1km, 0,5 = 500m. Als afstand minder dan 500m is, dan ben je dichterbij.
+			    	if (result < 0.2 ) { // kleiner 200 meter
+			    		console.log("Je bent op locatie!");
+			    		alert("You just entered a location. Put your phone on silent!")
+			    		clearInterval(intervalTimers.onLocation);
+			    		geolocatie.innerHTML = "You just entered a location!";
+			    		self.checkIfLeftLocation(storedPositions.lat[i], storedPositions.lon[i]);
+			    		break;
+			    	} 
+				}      
+		    }, 5000);
+		},
+
+		checkIfLeftLocation:function(locationLat, locationLon) {
+	        var result;
+	        var self = this;
+	        var locNotify = document.getElementById("geolocatie");
+	        console.log(locationLat + " " + locationLon);
+
+			intervalTimers.leftLocation = setInterval(function() {
+				
+	        	result = self.getDistance(locationLat, locationLon, currentPosition.lat, currentPosition.lon);
+				if ( result > 0.01 ) { // kleiner 10 meter
+		    		console.log("You left the location.");
+		    		alert("You just left your location. Put your volume back on!")
+		    		clearInterval(intervalTimers.leftLocation);
+					geolocatie.innerHTML = "You just left the previous location!";
+		    		self.onLocation();
+		    	} else { 
+		    		console.log("You're still in the same location");
+		    		geolocatie.innerHTML = "You're still on the same location!";
+		    	}
+
+
+	   		}, 10000);
+		},
+
+
+	}
+
+	controller.init();
 
 })();

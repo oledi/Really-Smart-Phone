@@ -34,5 +34,3 @@ window.onload = function () {
 
     document.getElementById('saveData').onclick = initCoords;
 }
-
-window.onload(); // has to be triggered in jsFiddle
